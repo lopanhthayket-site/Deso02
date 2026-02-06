@@ -441,7 +441,14 @@ exportPdfBtn.onclick = () => {
   const doc = new jsPDF("p","pt","a4");
   let y = 40;
 
-  const add = t => { doc.text(t,40,y); y+=18; if(y>760){doc.addPage();y=40;} };
+  const add = t => {
+    doc.text(String(t), 40, y);
+    y += 18;
+    if (y > 760) {
+      doc.addPage();
+      y = 40;
+    }
+  };
 
   add("A. PART 1");
   ["mc3","mc4","mc5","mc6","mc7","mc8","mc9","mc10","mc11","mc12"].forEach((n,i)=>{
@@ -450,14 +457,23 @@ exportPdfBtn.onclick = () => {
   });
 
   add("WORD FORM");
-  for(let i=1;i<=4;i++) add(`WF${i}: ${document.querySelector(`[name="wf${i}"]`).value}`);
+  ["wf2","wf3","wf4","wf5"].forEach((n,i)=>{
+    const el=document.querySelector(`[name="${n}"]`);
+    add(`WF${i+1}: ${el?el.value:""}`);
+  });
 
   add("VERB FORM");
-  for(let i=1;i<=4;i++) add(`V${i}: ${document.querySelector(`[name="v${i}"]`).value}`);
+  ["v3","v4","v5","v6"].forEach((n,i)=>{
+    const el=document.querySelector(`[name="${n}"]`);
+    add(`V${i+1}: ${el?el.value:""}`);
+  });
 
   add("MATCHING");
-  add("1. B");
-  for(let i=2;i<=5;i++) add(`${i}. ${document.querySelector(`[name="match${i}"]`).value}`);
+  add("1. C");
+  for(let i=2;i<=5;i++){
+    const el=document.querySelector(`[name="match${i}"]`);
+    add(`${i}. ${el?el.value:""}`);
+  }
 
   add("GAP FILL");
   for(let i=1;i<=4;i++){
@@ -479,7 +495,8 @@ exportPdfBtn.onclick = () => {
 
   add("WRITING");
   for(let i=1;i<=4;i++){
-    add(`Q${i}: ${document.querySelector(`[name="wr${i}"]`).value}`);
+    const el=document.querySelector(`[name="wr${i}"]`);
+    add(`Q${i}: ${el?el.value:""}`);
   }
 
   doc.save("BaiLam_HocSinh.pdf");
